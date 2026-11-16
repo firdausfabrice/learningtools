@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f7f4ea">
+  <meta name="description" content="A little world of learning, made just for you.">
+  <title>My Learning World</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #20352e;
+      --muted: #718078;
+      --green: #2f6b57;
+      --green-dark: #245241;
+      --green-pale: #e6f0e7;
+      --cream: #f7f4ea;
+      --card: rgba(255, 253, 247, .94);
+      --line: #e6e1d5;
+      --gold: #c89a3d;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 50% 0, #eaf3e9 0, transparent 56%),
+        var(--cream);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    button, a { font: inherit; }
+    a { color: inherit; }
+
+    .page {
+      width: min(100% - 32px, 620px);
+      margin-inline: auto;
+      padding: max(24px, env(safe-area-inset-top)) 0 max(32px, env(safe-area-inset-bottom));
+    }
+
+    .brand {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 9px;
+      color: var(--green);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: .01em;
+    }
+
+    .brand-mark { color: var(--gold); font-size: 21px; }
+
+    .welcome {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      margin-top: 20px;
+      padding: 34px 24px 30px;
+      border: 1px solid #e1e7d9;
+      border-radius: 30px;
+      background: linear-gradient(160deg, #fffdf7 16%, #f5f3e7 100%);
+      text-align: center;
+      box-shadow: 0 12px 35px rgba(39, 64, 52, .07);
+    }
+
+    .welcome::before, .welcome::after {
+      position: absolute;
+      z-index: -1;
+      bottom: -66px;
+      width: 280px;
+      height: 145px;
+      border-radius: 50%;
+      content: "";
+    }
+
+    .welcome::before { left: -100px; background: #e4eee0; transform: rotate(12deg); }
+    .welcome::after { right: -120px; background: #d7e8d8; transform: rotate(-12deg); }
+
+    .scene {
+      position: relative;
+      display: grid;
+      width: 118px;
+      height: 118px;
+      margin: 0 auto 17px;
+      place-items: center;
+      border: 1px solid rgba(47, 107, 87, .1);
+      border-radius: 50%;
+      background: linear-gradient(155deg, #eaf3e7, #dcebdd);
+      box-shadow: inset 0 -12px 22px rgba(47, 107, 87, .05);
+    }
+
+    .scene-moon { position: absolute; top: 12px; right: 15px; color: var(--gold); font-size: 20px; }
+    .scene-star { position: absolute; top: 28px; left: 18px; color: #b6a36f; font-size: 13px; }
+    .scene-character { margin-top: 12px; font-size: 48px; line-height: 1; }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(32px, 8vw, 43px);
+      font-weight: 700;
+      letter-spacing: -.035em;
+      line-height: 1.12;
+    }
+
+    .welcome-copy {
+      max-width: 340px;
+      margin: 12px auto 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    .journey { margin-top: 21px; }
+
+    .start-button {
+      display: flex;
+      min-height: 58px;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 15px 20px;
+      border-radius: 17px;
+      background: var(--green);
+      color: white;
+      cursor: pointer;
+      font-size: 17px;
+      font-weight: 750;
+      list-style: none;
+      box-shadow: 0 7px 16px rgba(47, 107, 87, .2);
+      transition: background .2s ease, transform .2s ease;
+    }
+
+    .start-button::-webkit-details-marker { display: none; }
+    .start-button::marker { content: ""; }
+    .start-button:hover { background: var(--green-dark); }
+    .start-button:active { transform: scale(.985); }
+    .journey[open] .start-button { border-radius: 17px 17px 0 0; }
+
+    .activities {
+      padding: 21px 17px 17px;
+      border: 1px solid var(--line);
+      border-top: 0;
+      border-radius: 0 0 20px 20px;
+      background: var(--card);
+      animation: reveal .25s ease-out;
+    }
+
+    .activities-heading { margin: 0 0 14px; text-align: center; }
+    .activities-heading h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 23px;
+    }
+
+    .activities-heading p { margin: 5px 0 0; color: var(--muted); font-size: 14px; }
+
+    .activity-list { display: grid; gap: 10px; }
+
+    .activity {
+      display: flex;
+      min-height: 74px;
+      align-items: center;
+      gap: 13px;
+      padding: 13px 15px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: #fffefa;
+      text-decoration: none;
+    }
+
+    a.activity { transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease; }
+    a.activity:hover {
+      transform: translateY(-2px);
+      border-color: #b8d0bd;
+      box-shadow: 0 5px 14px rgba(39, 64, 52, .07);
+    }
+
+    .activity-icon {
+      display: grid;
+      width: 45px;
+      height: 45px;
+      flex: 0 0 45px;
+      place-items: center;
+      border-radius: 14px;
+      background: var(--green-pale);
+      font-size: 23px;
+    }
+
+    .activity-copy { min-width: 0; flex: 1; }
+    .activity-title { display: block; font-size: 16px; font-weight: 750; }
+    .activity-description { display: block; margin-top: 3px; color: var(--muted); font-size: 13px; }
+    .activity-arrow { color: var(--green); font-size: 22px; }
+
+    .coming-soon {
+      background: rgba(255, 254, 250, .72);
+      color: #72796f;
+    }
+
+    .coming-soon .activity-icon { background: #f0eee6; filter: saturate(.72); }
+    .coming-soon .activity-title { color: #536159; }
+    .coming-soon .activity-arrow {
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: #f2efe5;
+      color: #827d6c;
+      font-size: 10px;
+      font-weight: 750;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .footer { margin: 20px 0 0; color: var(--muted); font-size: 12px; text-align: center; }
+
+    :focus-visible { outline: 3px solid #d5aa4f; outline-offset: 3px; }
+
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">☾</span> My Learning World</div>
+
+    <section class="welcome" aria-labelledby="welcome-title">
+      <div class="scene" role="img" aria-label="A little explorer in a peaceful garden">
+        <span class="scene-moon" aria-hidden="true">☾</span>
+        <span class="scene-star" aria-hidden="true">✦</span>
+        <span class="scene-character" aria-hidden="true">🧒</span>
+      </div>
+      <p class="eyebrow">A little world made for you</p>
+      <h1 id="welcome-title">Assalamu'alaikum!</h1>
+      <p class="welcome-copy">Ready to explore, discover, and learn something new today?</p>
+    </section>
+
+    <details class="journey">
+      <summary class="start-button">Start exploring <span aria-hidden="true">→</span></summary>
+      <section class="activities" aria-labelledby="activities-title">
+        <div class="activities-heading">
+          <h2 id="activities-title">Choose your adventure</h2>
+          <p>Where shall we go today?</p>
+        </div>
+        <div class="activity-list">
+          <a class="activity" href="surah_recitation_tracker.html">
+            <span class="activity-icon" aria-hidden="true">🌙</span>
+            <span class="activity-copy">
+              <span class="activity-title">Qur'an Recitation</span>
+              <span class="activity-description">Visit the peaceful recitation garden</span>
+            </span>
+            <span class="activity-arrow" aria-hidden="true">›</span>
+          </a>
+          <div class="activity coming-soon" aria-label="Math, coming soon">
+            <span class="activity-icon" aria-hidden="true">🚀</span>
+            <span class="activity-copy">
+              <span class="activity-title">Math</span>
+              <span class="activity-description">Numbers, puzzles, and discoveries</span>
+            </span>
+            <span class="activity-arrow">Soon</span>
+          </div>
+          <div class="activity coming-soon" aria-label="Reading, coming soon">
+            <span class="activity-icon" aria-hidden="true">📚</span>
+            <span class="activity-copy">
+              <span class="activity-title">Reading</span>
+              <span class="activity-description">Stories waiting to be explored</span>
+            </span>
+            <span class="activity-arrow">Soon</span>
+          </div>
+        </div>
+      </section>
+    </details>
+
+    <p class="footer">One little adventure at a time ✨</p>
+  </main>
+</body>
+</html>
