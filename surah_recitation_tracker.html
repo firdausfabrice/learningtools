@@ -2,68 +2,492 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <meta name="theme-color" content="#f7f4ea" />
 <title>My Surah Garden</title>
 <style>
-:root{--bg:#f7f4ea;--card:#fffdf7;--ink:#20352e;--muted:#718078;--green:#2f6b57;--green2:#dfeee5;--gold:#c89a3d;--line:#e6e1d5;--danger:#9a4c4c}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent} body{margin:0;background:linear-gradient(180deg,#eef5ed 0,#f7f4ea 28%,#f7f4ea 100%);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
-.wrap{max-width:560px;margin:auto;padding:calc(env(safe-area-inset-top) + 18px) 18px calc(env(safe-area-inset-bottom) + 30px)}
-header{text-align:center;padding:12px 0 20px}.moon{font-size:35px}h1{font-family:Georgia,serif;font-size:30px;margin:5px 0 4px}header p{margin:0;color:var(--muted);font-size:14px}
+:root{--bg:#f7f4ea;--card:#fffdf7;--ink:#20352e;--muted:#718078;--green:#2f6b57;--green2:#dfeee5;--gold:#c89a3d;--gold2:#f8ecd0;--line:#e6e1d5;--danger:#9a4c4c;
+  --arabic-font:"Geeza Pro","SF Arabic","Noto Naskh Arabic","Amiri","Traditional Arabic",serif}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:linear-gradient(180deg,#eef5ed 0,#f7f4ea 28%,#f7f4ea 100%);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+.wrap{max-width:560px;margin:auto;padding:calc(env(safe-area-inset-top) + 12px) max(18px,env(safe-area-inset-right)) calc(env(safe-area-inset-bottom) + 30px) max(18px,env(safe-area-inset-left))}
+button,a,select,label{touch-action:manipulation}
+button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid rgba(47,107,87,.45);outline-offset:3px}
+
+/* Way back to the home page */
+.homeLink{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 16px 0 12px;border:1px solid rgba(47,107,87,.14);border-radius:16px;background:rgba(255,253,247,.85);color:var(--green);font-weight:750;font-size:15px;text-decoration:none;box-shadow:0 5px 16px rgba(39,64,52,.07)}
+.homeLink span{font-size:20px;line-height:1}
+.homeLink:active{transform:scale(.97)}
+
+header{text-align:center;padding:4px 0 20px}.moon{font-size:35px}h1{font-family:Georgia,serif;font-size:30px;margin:5px 0 4px}header p{margin:0;color:var(--muted);font-size:14px}
 .card{background:rgba(255,253,247,.94);border:1px solid var(--line);border-radius:24px;padding:20px;margin-bottom:15px;box-shadow:0 7px 22px rgba(39,64,52,.06)}
-.label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}.hero{text-align:center;padding:26px 20px}.arabic{font-family:Georgia,"Times New Roman",serif;font-size:32px;direction:rtl;margin:9px 0 4px}.surah{font-family:Georgia,serif;font-size:29px;font-weight:700;margin:4px}.sub{color:var(--muted);font-size:14px}
-button{font:inherit;border:0;cursor:pointer}.primary{width:100%;margin-top:20px;background:var(--green);color:white;border-radius:17px;padding:16px;font-weight:750;font-size:17px;box-shadow:0 6px 14px rgba(47,107,87,.18)}.primary:active{transform:scale(.985)}.primary[disabled]{opacity:.55}
-.secondary{background:var(--green2);color:var(--green);border-radius:13px;padding:11px 14px;font-weight:700}.tiny{background:transparent;color:var(--muted);padding:8px;font-size:13px}.danger{color:var(--danger)}
-.shuffle{height:82px;display:flex;align-items:center;justify-content:center;margin:12px 0 3px;overflow:hidden}.shuffleText{font-family:Georgia,serif;font-weight:700;font-size:29px}.spinning{animation:pulse .16s infinite alternate}@keyframes pulse{from{opacity:.35;transform:scale(.95)}to{opacity:1;transform:scale(1.03)}}
-.progress{display:flex;gap:7px;justify-content:center;margin-top:14px}.dot{width:9px;height:9px;border-radius:50%;background:#dedbd0}.dot.used{background:var(--gold)}.doneBadge{display:inline-block;background:var(--green2);color:var(--green);padding:7px 11px;border-radius:999px;font-size:13px;font-weight:700;margin-top:12px}
-.row{display:flex;align-items:center;justify-content:space-between;gap:12px}.sectionTitle{font-family:Georgia,serif;font-size:22px;margin:4px 0}.ayah{margin-top:13px;border:1px solid var(--line);border-radius:17px;padding:14px}.ayahTop{display:flex;justify-content:space-between;align-items:center}.ayahName{font-weight:750}.ayahArabic{font-family:Georgia,serif;font-size:23px;direction:rtl;text-align:right;margin:10px 0;color:#344d43}.counter{display:flex;gap:8px;align-items:center}.rep{width:28px;height:28px;border-radius:50%;border:2px solid #cfd8d1;background:white}.rep.on{background:var(--green);border-color:var(--green);position:relative}.rep.on:after{content:'✓';color:white;font-size:16px;position:absolute;inset:2px 0 0;text-align:center}.count{font-size:13px;color:var(--muted);min-width:30px;text-align:right}
-.historyItem{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}.historyItem:last-child{border-bottom:0}.empty{text-align:center;color:var(--muted);padding:12px;font-size:14px}.footer{text-align:center;color:var(--muted);font-size:12px;padding:8px 15px}.celebrate{animation:pop .55s ease}@keyframes pop{0%{transform:scale(.92)}55%{transform:scale(1.04)}100%{transform:scale(1)}}
-details summary{cursor:pointer;color:var(--muted);font-size:13px;text-align:center;list-style:none}details summary::-webkit-details-marker{display:none}.settings{padding-top:13px;text-align:center}
+.label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}.hero{text-align:center;padding:26px 20px}
+.arabic{font-family:var(--arabic-font);font-size:30px;direction:rtl;margin:9px 0 4px}
+.sub{color:var(--muted);font-size:14px;line-height:1.4}
+button{font:inherit;border:0;cursor:pointer;color:inherit}
+.primary{width:100%;margin-top:20px;background:var(--green);color:white;border-radius:17px;padding:16px;font-weight:750;font-size:17px;box-shadow:0 6px 14px rgba(47,107,87,.18)}.primary:active{transform:scale(.985)}.primary[disabled]{opacity:.55}
+.tiny{background:transparent;color:var(--muted);padding:10px;font-size:13px}.danger{color:var(--danger)}
+.shuffle{height:82px;display:flex;align-items:center;justify-content:center;margin:12px 0 3px;overflow:hidden}.shuffleText{font-family:Georgia,serif;font-weight:700;font-size:29px}
+.spinning{animation:pulse .16s infinite alternate}@keyframes pulse{from{opacity:.35;transform:scale(.95)}to{opacity:1;transform:scale(1.03)}}
+.doneBadge{display:inline-block;background:var(--green2);color:var(--green);padding:7px 11px;border-radius:999px;font-size:13px;font-weight:700;margin-top:12px}
+.timesBadge{display:inline-block;margin-top:10px;color:var(--gold);font-size:13px;font-weight:700}
+.celebrate{animation:pop .55s ease}@keyframes pop{0%{transform:scale(.92)}55%{transform:scale(1.04)}100%{transform:scale(1)}}
+
+/* My surahs collection (this cycle + times recited) */
+.cycleLabel{margin-top:20px;margin-bottom:10px}
+.collection{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;text-align:left}
+.chip{display:flex;justify-content:space-between;align-items:center;gap:6px;padding:9px 11px;border-radius:14px;border:1px solid var(--line);background:#fff;font-size:13px;font-weight:650}
+.chip .n{color:var(--muted);font-weight:600;font-size:12px;white-space:nowrap}
+.chip.done{background:var(--gold2);border-color:#efd9a6}
+.chip.done .name::before{content:'✓ ';color:var(--gold)}
+.chip.today{border-color:var(--green);box-shadow:0 0 0 1px var(--green) inset}
+
+/* Currently memorizing */
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px}.sectionTitle{font-family:Georgia,serif;font-size:22px;margin:4px 0}
+.memTitleAr{font-family:var(--arabic-font);font-size:22px;font-weight:400}
+.garden{display:flex;flex-wrap:wrap;gap:4px;margin:12px 0 4px;font-size:20px;line-height:1}
+.garden .empty-step{opacity:.35;filter:grayscale(1)}
+.legend{margin:10px 0 4px;background:#f8f6ef;border-radius:14px;padding:4px 12px}
+.legend summary{color:var(--green);font-size:13px;font-weight:700;padding:9px 0;cursor:pointer}
+.legend ol{list-style:none;margin:0;padding:0 0 10px}
+.legend li{display:grid;grid-template-columns:30px 1fr;gap:4px;padding:6px 0;font-size:13px;line-height:1.35;border-top:1px solid var(--line)}
+.legend li b{display:block}.legend li .ic{font-size:18px}
+.bismillah{font-family:var(--arabic-font);direction:rtl;text-align:center;font-size:22px;color:#556a61;margin:16px 0 2px}
+.ayah{margin-top:12px;border:1px solid var(--line);border-radius:17px;padding:14px;background:#fff}
+.ayah.byheart{background:#fbf8ee}
+.ayahTop{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.ayahNum{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--green2);color:var(--green);font-weight:750;font-size:13px}
+.stepName{font-size:13px;color:var(--muted);font-weight:650;text-align:right}
+.ayahArabic{font-family:var(--arabic-font);font-size:26px;line-height:1.9;direction:rtl;text-align:right;margin:8px 0 6px;color:#2c463c}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.step{height:46px;border-radius:14px;background:#f1efe7;border:2px solid transparent;font-size:21px;line-height:1}
+.step span{display:inline-block;opacity:.35;filter:grayscale(1)}
+.step.reached{background:var(--green2)}.step.reached span{opacity:1;filter:none}
+.step.current{border-color:var(--green);background:#fff}
+.step:active{transform:scale(.95)}
+.graduate{margin-top:16px;padding:16px;border-radius:18px;background:var(--gold2);text-align:center}
+.graduate .primary{margin-top:12px;background:var(--gold)}
+
+.historyItem{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px}.historyItem:last-child{border-bottom:0}
+.empty{text-align:center;color:var(--muted);padding:12px;font-size:14px}.footer{text-align:center;color:var(--muted);font-size:12px;padding:8px 15px}
+
+/* Parent settings */
+details.parent>summary{cursor:pointer;color:var(--muted);font-size:13px;text-align:center;list-style:none;padding:10px}
+details.parent>summary::-webkit-details-marker{display:none}
+.settings{padding:4px 0 10px}
+.setting{background:rgba(255,253,247,.94);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:10px}
+.setting label.title{display:block;font-size:13px;font-weight:700;margin-bottom:8px}
+.setting select{width:100%;min-height:46px;font:inherit;font-size:16px;padding:8px 10px;border-radius:12px;border:1px solid var(--line);background:#fff;color:var(--ink)}
+.poolList{display:grid;gap:2px;margin-top:6px;max-height:320px;overflow-y:auto}
+.poolList label{display:flex;align-items:center;gap:10px;min-height:40px;font-size:14px}
+.poolList input{width:20px;height:20px;accent-color:var(--green)}
+.poolList summary{font-size:13px;font-weight:700;cursor:pointer;padding:4px 0}
+.resetRow{text-align:center}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body><main class="wrap">
+<nav><a class="homeLink" href="./index.html#activities" aria-label="Back to the home page"><span aria-hidden="true">←</span> Home</a></nav>
+
 <header><div class="moon">☾</div><h1>My Surah Garden</h1><p id="today"></p></header>
+
 <section class="card hero" id="todayCard">
-<div class="label">Today's recitation</div>
-<div class="shuffle"><div id="pickText" class="shuffleText">Ready?</div></div>
-<div id="arabicName" class="arabic"></div><div id="pickSub" class="sub">Tap below to discover today's surah.</div>
-<button id="pickBtn" class="primary">Pick My Surah ✨</button>
-<div id="completeArea"></div><div id="cycleDots" class="progress"></div><div id="cycleLabel" class="sub" style="margin-top:9px"></div>
+  <div class="label">Today's recitation</div>
+  <div class="shuffle"><div id="pickText" class="shuffleText">Ready?</div></div>
+  <div id="arabicName" class="arabic"></div>
+  <div id="pickSub" class="sub">Tap below to discover today's surah.</div>
+  <button id="pickBtn" class="primary" type="button">Pick My Surah ✨</button>
+  <div id="completeArea"></div>
+  <div id="cycleLabel" class="sub cycleLabel"></div>
+  <div id="collection" class="collection"></div>
 </section>
-<section class="card">
-<div class="label">🌱 Currently memorizing</div><div class="sectionTitle">Al-Ma'un · الماعون</div><div class="sub">Tap a circle after each good recitation.</div>
-<div class="ayah"><div class="ayahTop"><div class="ayahName">Ayah 2</div><div class="counter" id="c2"></div></div><div class="ayahArabic">فَذَٰلِكَ ٱلَّذِى يَدُعُّ ٱلْيَتِيمَ</div></div>
-<div class="ayah"><div class="ayahTop"><div class="ayahName">Ayah 3</div><div class="counter" id="c3"></div></div><div class="ayahArabic">وَلَا يَحُضُّ عَلَىٰ طَعَامِ ٱلْمِسْكِينِ</div></div>
+
+<section class="card" id="memCard">
+  <div class="label">🌱 Currently memorizing</div>
+  <div class="sectionTitle" id="memTitle"></div>
+  <div class="sub" id="memSummary"></div>
+  <div class="garden" id="memGarden" aria-hidden="true"></div>
+  <details class="legend">
+    <summary>What do the steps mean?</summary>
+    <ol id="legendList"></ol>
+  </details>
+  <div class="bismillah" id="bismillah"></div>
+  <div id="ayahList"></div>
+  <div id="memDone"></div>
 </section>
+
 <section class="card"><div class="row"><div><div class="label">Recent days</div><div class="sectionTitle">Recitation History</div></div><div>🌿</div></div><div id="history"></div></section>
-<details><summary>Parent settings</summary><div class="settings"><button id="resetPractice" class="tiny">Reset today's practice counters</button><br><button id="resetAll" class="tiny danger">Reset all app data</button></div></details>
+
+<details class="parent"><summary>Parent settings</summary>
+  <div class="settings">
+    <div class="setting">
+      <label class="title" for="memSelect">Currently memorizing</label>
+      <select id="memSelect"></select>
+      <div class="sub" style="margin-top:6px;font-size:12px">Steps are saved for each surah, so switching back keeps progress.</div>
+    </div>
+    <div class="setting">
+      <details>
+        <summary class="title" id="poolSummary" style="font-size:13px;font-weight:700;cursor:pointer">Daily recitation surahs</summary>
+        <div class="sub" style="font-size:12px;margin-top:6px">Ticked surahs are part of the daily random pick. A newly ticked surah joins the current cycle.</div>
+        <div class="poolList" id="poolList"></div>
+      </details>
+    </div>
+    <div class="resetRow">
+      <button id="resetSteps" class="tiny" type="button">Reset steps for this surah</button><br>
+      <button id="resetAll" class="tiny danger" type="button">Reset all app data</button>
+    </div>
+  </div>
+</details>
 <div class="footer">A little practice each day 🌙<br>Progress is stored only on this device.</div>
 </main>
+
+<script src="./js/quran-data.js"></script>
 <script>
-const SURAHS=[
- {name:'Al-Fatihah',ar:'الفاتحة'}, {name:'Al-Ikhlas',ar:'الإخلاص'}, {name:'An-Nas',ar:'الناس'}, {name:'Al-Falaq',ar:'الفلق'}, {name:'Al-Masad',ar:'المسد'}, {name:'Al-Kawthar',ar:'الكوثر'}, {name:'An-Nasr',ar:'النصر'}
+const Q = window.QURAN; // { surahNumber: { name, ar, meaning, ayahs: [...] } }
+
+// ----- Settings you may want to change -----
+const DEFAULT_POOL = [1, 112, 114, 113, 111, 108, 110]; // memorized surahs (by surah number)
+const DEFAULT_MEMORIZING = 107;                       // Al-Ma'un
+const BY_HEART = 4;                                   // step at which an ayah counts as memorized
+
+// Memorization steps for each ayah (the parent ticks these).
+const STEPS = [
+  { icon: '🌰', name: 'Listened',         hint: 'Has heard you recite it several times.' },
+  { icon: '🌱', name: 'Repeats after me', hint: 'Can echo your reading, phrase by phrase.' },
+  { icon: '🌿', name: 'With a hint',      hint: 'Recites it alone when you give the first word.' },
+  { icon: '🌷', name: 'By heart',         hint: 'Recites it alone with no help.' },
+  { icon: '🌳', name: 'Strong',           hint: 'Still by heart on a later day, joined smoothly to the ayah before.' }
 ];
-const KEY='surahGardenV1';
-const dateKey=()=>{let d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
-function fresh(){return {bag:[],cycle:1,cycleUsed:0,today:null,history:[],practice:{date:dateKey(),a2:0,a3:0}}}
-function load(){try{return Object.assign(fresh(),JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){return fresh()}}
-let st=load();
-function save(){localStorage.setItem(KEY,JSON.stringify(st))}
-function shuffled(){let a=SURAHS.map((_,i)=>i);for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function normalizeDay(){if(st.practice?.date!==dateKey())st.practice={date:dateKey(),a2:0,a3:0};if(st.today?.date!==dateKey())st.today=null;save()}
-normalizeDay();
-const $=s=>document.querySelector(s);
-$('#today').textContent=new Intl.DateTimeFormat(undefined,{weekday:'long',month:'long',day:'numeric'}).format(new Date());
-function renderToday(){let t=st.today;let btn=$('#pickBtn'), txt=$('#pickText'), ar=$('#arabicName'), sub=$('#pickSub'), area=$('#completeArea');area.innerHTML='';
- if(t){let s=SURAHS[t.index];txt.textContent=s.name;ar.textContent=s.ar;sub.textContent=t.completed?'Beautiful — today’s recitation is complete.':'Recite it when you are ready.';btn.style.display='none';if(t.completed){area.innerHTML='<div class="doneBadge">✓ Recited today</div>';$('#todayCard').classList.add('celebrate')}else{let b=document.createElement('button');b.className='primary';b.textContent='✓ I Recited It';b.onclick=complete;area.appendChild(b)}}else{txt.textContent='Ready?';ar.textContent='';sub.textContent='Tap below to discover today’s surah.';btn.style.display='block'}
- let used=st.cycleUsed||0;$('#cycleDots').innerHTML=SURAHS.map((_,i)=>`<span class="dot ${i<used?'used':''}"></span>`).join('');$('#cycleLabel').textContent=`Cycle ${st.cycle} · ${used} of ${SURAHS.length} selected`;
+
+// ----- Saved data -----
+const KEY = 'surahGardenV2';
+const OLD_KEY = 'surahGardenV1';         // earlier version; left untouched as a backup
+const OLD_V1_ORDER = [1, 112, 114, 113, 111, 108, 110]; // v1 stored positions in this list
+
+function dateKey(d = new Date()) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
-function pick(){let btn=$('#pickBtn');btn.disabled=true;let txt=$('#pickText');txt.classList.add('spinning');let n=0;let timer=setInterval(()=>{txt.textContent=SURAHS[Math.floor(Math.random()*SURAHS.length)].name;if(++n>12){clearInterval(timer);if(!st.bag.length){if(st.cycleUsed>=SURAHS.length){st.cycle++;st.cycleUsed=0}st.bag=shuffled()}let idx=st.bag.shift();st.cycleUsed++;st.today={date:dateKey(),index:idx,completed:false};save();txt.classList.remove('spinning');btn.disabled=false;renderToday()}},90)}
-function complete(){st.today.completed=true;let existing=st.history.find(x=>x.date===dateKey());if(!existing)st.history.unshift({date:dateKey(),index:st.today.index});st.history=st.history.slice(0,60);save();renderToday();renderHistory()}
-$('#pickBtn').onclick=pick;
-function renderPractice(){for(let ay of [2,3]){let key='a'+ay,val=st.practice[key]||0,el=$('#c'+ay);el.innerHTML='';for(let i=1;i<=5;i++){let b=document.createElement('button');b.className='rep '+(i<=val?'on':'');b.setAttribute('aria-label',`Ayah ${ay}, repetition ${i}`);b.onclick=()=>{st.practice[key]=(i===val?Math.max(0,i-1):i);save();renderPractice()};el.appendChild(b)}let c=document.createElement('span');c.className='count';c.textContent=val+'/5';el.appendChild(c)}}
-function renderHistory(){let h=$('#history');if(!st.history.length){h.innerHTML='<div class="empty">Completed recitations will appear here.</div>';return}h.innerHTML=st.history.slice(0,10).map(x=>{let d=new Date(x.date+'T12:00:00'), ds=new Intl.DateTimeFormat(undefined,{month:'short',day:'numeric'}).format(d);return `<div class="historyItem"><span>${ds}</span><strong>${SURAHS[x.index]?.name||''} ✓</strong></div>`}).join('')}
-$('#resetPractice').onclick=()=>{if(confirm('Reset today’s Al-Ma’un practice counters?')){st.practice={date:dateKey(),a2:0,a3:0};save();renderPractice()}};
-$('#resetAll').onclick=()=>{if(confirm('Reset all selections, cycles, history, and practice progress?')){st=fresh();save();renderToday();renderPractice();renderHistory()}};
-renderToday();renderPractice();renderHistory();
-</script></body></html>
+
+function fresh() {
+  return {
+    version: 2,
+    pool: [...DEFAULT_POOL], // surahs in the daily random pick
+    bag: [],                 // surahs not yet recited in this cycle
+    cycle: 0,
+    today: null,             // { date, id, completed }
+    lastId: null,            // last recited surah (avoids the same one twice in a row across cycles)
+    history: [],             // [{ date, id }], newest first
+    counts: {},              // { surahNumber: timesRecited }
+    memorizing: DEFAULT_MEMORIZING,
+    levels: {}               // { surahNumber: [stepForAyah1, stepForAyah2, ...] }
+  };
+}
+
+function insertRandom(list, id) {
+  list.splice(Math.floor(Math.random() * (list.length + 1)), 0, id);
+}
+
+function shuffle(list) {
+  for (let i = list.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [list[i], list[j]] = [list[j], list[i]];
+  }
+  return list;
+}
+
+// Convert data from the first version (which stored list positions instead of surah numbers).
+function migrateV1(old) {
+  const s = fresh();
+  const valid = i => Number.isInteger(i) && i >= 0 && i < OLD_V1_ORDER.length;
+  s.history = (old.history || []).filter(h => valid(h.index)).map(h => ({ date: h.date, id: OLD_V1_ORDER[h.index] }));
+  s.history.forEach(h => { s.counts[h.id] = (s.counts[h.id] || 0) + 1; });
+  s.lastId = s.history.length ? s.history[0].id : null;
+  s.bag = (old.bag || []).filter(valid).map(i => OLD_V1_ORDER[i]);
+  s.cycle = (!s.bag.length && !old.cycleUsed) ? 0 : (old.cycle || 1);
+  if (old.today && valid(old.today.index)) {
+    s.today = { date: old.today.date, id: OLD_V1_ORDER[old.today.index], completed: !!old.today.completed };
+  }
+  // v1 used up a surah as soon as it was picked, even if it was never recited. Give those back.
+  if (s.cycle > 0) {
+    const everRecited = new Set(s.history.map(h => h.id));
+    for (const id of s.pool) {
+      const pickedToday = s.today && s.today.id === id;
+      if (!s.bag.includes(id) && !everRecited.has(id) && !pickedToday) insertRandom(s.bag, id);
+    }
+  }
+  return s;
+}
+
+function cleanUp(s) {
+  s.pool = (s.pool || []).filter(id => Q[id]);
+  s.bag = (s.bag || []).filter(id => s.pool.includes(id));
+  if (!Q[s.memorizing]) s.memorizing = DEFAULT_MEMORIZING;
+  s.history = (s.history || []).filter(h => Q[h.id]);
+  return s;
+}
+
+function load() {
+  try {
+    const saved = localStorage.getItem(KEY);
+    if (saved) return cleanUp(Object.assign(fresh(), JSON.parse(saved)));
+    const old = localStorage.getItem(OLD_KEY);
+    if (old) return cleanUp(migrateV1(JSON.parse(old)));
+  } catch (e) { console.warn('Could not read saved progress', e); }
+  return fresh();
+}
+
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) { console.warn('Could not save progress', e); }
+}
+
+let st = load();
+
+// A new day: if yesterday's surah was picked but not recited, put it back into this cycle.
+function normalizeDay() {
+  const t = st.today;
+  if (t && t.date !== dateKey()) {
+    if (!t.completed && st.pool.includes(t.id) && !st.bag.includes(t.id)) insertRandom(st.bag, t.id);
+    st.today = null;
+  }
+  save();
+}
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const times = n => n === 1 ? 'once' : n === 2 ? 'twice' : `${n} times`;
+
+// ----- Today's recitation -----
+function cycleDoneCount() {
+  if (st.cycle === 0) return 0;
+  const pending = st.today && !st.today.completed ? st.today.id : null;
+  return st.pool.filter(id => !st.bag.includes(id) && id !== pending).length;
+}
+
+function renderToday() {
+  const t = st.today, btn = $('#pickBtn'), txt = $('#pickText'), area = $('#completeArea');
+  area.innerHTML = '';
+  if (t) {
+    const s = Q[t.id], count = st.counts[t.id] || 0;
+    txt.textContent = s.name;
+    $('#arabicName').textContent = s.ar;
+    btn.style.display = 'none';
+    if (t.completed) {
+      $('#pickSub').textContent = 'Beautiful — today’s recitation is complete.';
+      area.innerHTML = `<div class="doneBadge">✓ Recited today</div><br><div class="timesBadge">🌙 Recited ${times(count)} so far</div>`;
+    } else {
+      $('#pickSub').textContent = 'Recite it when you are ready.';
+      const b = document.createElement('button');
+      b.className = 'primary'; b.type = 'button'; b.textContent = '✓ I Recited It';
+      b.onclick = complete;
+      area.appendChild(b);
+      if (count) area.insertAdjacentHTML('beforeend', `<div class="timesBadge">Recited ${times(count)} before</div>`);
+    }
+  } else {
+    txt.textContent = 'Ready?';
+    $('#arabicName').textContent = '';
+    $('#pickSub').textContent = st.pool.length ? 'Tap below to discover today’s surah.' : 'Add surahs in Parent settings to begin.';
+    btn.style.display = 'block';
+    btn.disabled = !st.pool.length;
+  }
+
+  const done = cycleDoneCount();
+  $('#cycleLabel').textContent = st.cycle === 0
+    ? `${st.pool.length} surahs in my garden`
+    : done >= st.pool.length
+      ? `Cycle ${st.cycle} complete 🌙 · all ${st.pool.length} recited`
+      : `Cycle ${st.cycle} · ${done} of ${st.pool.length} recited`;
+
+  const pending = t && !t.completed ? t.id : null;
+  $('#collection').innerHTML = st.pool.map(id => {
+    const isDone = st.cycle > 0 && !st.bag.includes(id) && id !== pending;
+    const cls = [isDone ? 'done' : '', t && t.id === id ? 'today' : ''].join(' ');
+    const n = st.counts[id] || 0;
+    return `<div class="chip ${cls}"><span class="name">${esc(Q[id].name)}</span><span class="n">${n}×</span></div>`;
+  }).join('');
+}
+
+let picking = false;
+function pick() {
+  if (picking || st.today || !st.pool.length) return;
+  picking = true;
+  const btn = $('#pickBtn'), txt = $('#pickText');
+  btn.disabled = true;
+  txt.classList.add('spinning');
+  let n = 0;
+  const timer = setInterval(() => {
+    txt.textContent = Q[st.pool[Math.floor(Math.random() * st.pool.length)]].name;
+    if (++n > 12) {
+      clearInterval(timer);
+      if (!st.bag.length) {           // start a new cycle
+        st.cycle++;
+        st.bag = shuffle([...st.pool]);
+        if (st.bag.length > 1 && st.bag[0] === st.lastId) {
+          const j = 1 + Math.floor(Math.random() * (st.bag.length - 1));
+          [st.bag[0], st.bag[j]] = [st.bag[j], st.bag[0]];
+        }
+      }
+      st.today = { date: dateKey(), id: st.bag.shift(), completed: false };
+      save();
+      txt.classList.remove('spinning');
+      btn.disabled = false;
+      picking = false;
+      renderToday();
+    }
+  }, 90);
+}
+
+function complete() {
+  const t = st.today;
+  if (!t || t.completed) return;
+  t.completed = true;
+  st.counts[t.id] = (st.counts[t.id] || 0) + 1;
+  st.lastId = t.id;
+  if (!st.history.some(h => h.date === t.date)) st.history.unshift({ date: t.date, id: t.id });
+  st.history = st.history.slice(0, 60);
+  save();
+  renderToday();
+  renderHistory();
+  const card = $('#todayCard');
+  card.classList.remove('celebrate'); void card.offsetWidth; card.classList.add('celebrate');
+}
+
+// ----- Currently memorizing -----
+function levelsFor(id) {
+  const n = Q[id].ayahs.length;
+  if (!Array.isArray(st.levels[id]) || st.levels[id].length !== n) {
+    const old = Array.isArray(st.levels[id]) ? st.levels[id] : [];
+    st.levels[id] = Array.from({ length: n }, (_, i) => old[i] || 0);
+  }
+  return st.levels[id];
+}
+
+const stepIcon = level => level ? STEPS[level - 1].icon : '🌰';
+const stepName = level => level ? STEPS[level - 1].name : 'Not started';
+
+function ayahElement(i) {
+  const id = st.memorizing, level = levelsFor(id)[i];
+  const el = document.createElement('div');
+  el.className = 'ayah' + (level >= BY_HEART ? ' byheart' : '');
+  el.dataset.ayah = i;
+  el.innerHTML = `
+    <div class="ayahTop"><span class="ayahNum">${i + 1}</span><span class="stepName">${level ? stepIcon(level) + ' ' : ''}${esc(stepName(level))}</span></div>
+    <div class="ayahArabic" lang="ar">${esc(Q[id].ayahs[i])}</div>
+    <div class="steps" role="group" aria-label="Ayah ${i + 1} steps"></div>`;
+  const steps = el.querySelector('.steps');
+  STEPS.forEach((step, k) => {
+    const value = k + 1;
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'step' + (value <= level ? ' reached' : '') + (value === level ? ' current' : '');
+    b.setAttribute('aria-label', `Ayah ${i + 1}: ${step.name}`);
+    b.setAttribute('aria-pressed', value === level);
+    b.innerHTML = `<span aria-hidden="true">${step.icon}</span>`;
+    b.onclick = () => setLevel(i, value === level ? value - 1 : value, k);
+    steps.appendChild(b);
+  });
+  return el;
+}
+
+function setLevel(i, value, focusIndex) {
+  levelsFor(st.memorizing)[i] = value;
+  save();
+  const old = document.querySelector(`.ayah[data-ayah="${i}"]`);
+  const updated = ayahElement(i);
+  old.replaceWith(updated);
+  updated.querySelectorAll('.step')[focusIndex].focus({ preventScroll: true });
+  renderMemSummary();
+}
+
+function renderMemSummary() {
+  const id = st.memorizing, lv = levelsFor(id), n = lv.length;
+  const byHeart = lv.filter(l => l >= BY_HEART).length;
+  $('#memSummary').textContent = `${byHeart} of ${n} ayat by heart · tap a step after each practice`;
+  $('#memGarden').innerHTML = lv.map(l => `<span class="${l ? '' : 'empty-step'}">${stepIcon(l)}</span>`).join('');
+
+  const area = $('#memDone');
+  if (byHeart < n) { area.innerHTML = ''; return; }
+  if (st.pool.includes(id)) {
+    area.innerHTML = `<div class="graduate"><strong>🌳 ${esc(Q[id].name)} is memorized!</strong><div class="sub">It is part of the daily recitation. Choose the next surah in Parent settings.</div></div>`;
+  } else {
+    area.innerHTML = `<div class="graduate"><strong>🌷 Every ayah is by heart — MashaAllah!</strong><div class="sub">Add ${esc(Q[id].name)} to the daily recitation surahs?</div><button class="primary" type="button" id="graduateBtn">🌙 Add to daily recitation</button></div>`;
+    $('#graduateBtn').onclick = () => { setInPool(id, true); renderMemorizing(); renderToday(); renderSettings(); };
+  }
+}
+
+function renderMemorizing() {
+  const id = st.memorizing, s = Q[id];
+  $('#memTitle').innerHTML = `${esc(s.name)} · <span class="memTitleAr" lang="ar">${esc(s.ar)}</span>`;
+  $('#bismillah').textContent = id === 1 ? '' : Q[1].ayahs[0];
+  const list = $('#ayahList');
+  list.innerHTML = '';
+  s.ayahs.forEach((_, i) => list.appendChild(ayahElement(i)));
+  renderMemSummary();
+}
+
+$('#legendList').innerHTML = STEPS.map((s, k) =>
+  `<li><span class="ic">${s.icon}</span><span><b>${k + 1}. ${esc(s.name)}</b>${esc(s.hint)}</span></li>`).join('');
+
+// ----- History -----
+function renderHistory() {
+  const h = $('#history');
+  if (!st.history.length) { h.innerHTML = '<div class="empty">Completed recitations will appear here.</div>'; return; }
+  const fmt = new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric' });
+  h.innerHTML = st.history.slice(0, 10).map(x =>
+    `<div class="historyItem"><span>${fmt.format(new Date(x.date + 'T12:00:00'))}</span><strong>${esc(Q[x.id].name)} ✓</strong></div>`).join('');
+}
+
+// ----- Parent settings -----
+function setInPool(id, on) {
+  if (on && !st.pool.includes(id)) {
+    st.pool.push(id);
+    if (st.cycle > 0) insertRandom(st.bag, id); // joins the current cycle
+  } else if (!on) {
+    st.pool = st.pool.filter(x => x !== id);
+    st.bag = st.bag.filter(x => x !== id);
+  }
+  save();
+}
+
+function renderSettings() {
+  const ids = Object.keys(Q).map(Number).sort((a, b) => a - b);
+  $('#memSelect').innerHTML = ids.map(id =>
+    `<option value="${id}" ${id === st.memorizing ? 'selected' : ''}>${id}. ${esc(Q[id].name)} (${Q[id].ayahs.length} ayat)${st.pool.includes(id) ? ' ✓' : ''}</option>`).join('');
+  $('#poolSummary').textContent = `Daily recitation surahs (${st.pool.length})`;
+  $('#poolList').innerHTML = ids.map(id =>
+    `<label><input type="checkbox" value="${id}" ${st.pool.includes(id) ? 'checked' : ''}> ${id}. ${esc(Q[id].name)}</label>`).join('');
+}
+
+$('#memSelect').onchange = e => { st.memorizing = Number(e.target.value); save(); renderMemorizing(); };
+$('#poolList').onchange = e => {
+  if (e.target.type !== 'checkbox') return;
+  setInPool(Number(e.target.value), e.target.checked);
+  renderToday(); renderMemSummary(); renderSettings();
+};
+$('#resetSteps').onclick = () => {
+  if (confirm(`Reset the memorization steps for ${Q[st.memorizing].name}?`)) {
+    st.levels[st.memorizing] = Q[st.memorizing].ayahs.map(() => 0);
+    save(); renderMemorizing();
+  }
+};
+$('#resetAll').onclick = () => {
+  if (confirm('Reset all selections, cycles, history, counts, and memorization steps?')) {
+    st = fresh(); save(); renderAll();
+  }
+};
+$('#pickBtn').onclick = pick;
+
+function renderAll() {
+  $('#today').textContent = new Intl.DateTimeFormat(undefined, { weekday: 'long', month: 'long', day: 'numeric' }).format(new Date());
+  renderToday(); renderMemorizing(); renderHistory(); renderSettings();
+}
+
+// If the app stays open past midnight, refresh when it comes back to the screen.
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && !picking) { normalizeDay(); renderAll(); }
+});
+
+normalizeDay();
+renderAll();
+</script>
+</body>
+</html>
