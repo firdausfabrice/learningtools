@@ -542,6 +542,9 @@
 
     startButton.addEventListener('click', showActivities);
     backButton.addEventListener('click', showWelcome);
+
+    // Coming back from an activity (./index.html#activities) skips the welcome screen.
+    if (location.hash === '#activities') showActivities();
   </script>
 </body>
 </html>
